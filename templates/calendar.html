@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block stylesheet %}     
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='calendar.css')}}"/>
+{% endblock %} 
+
+{% block content %} 
+
+<div class="container">
+    {% for reminder in reminders %}
+
+    <div class="row row-striped">
+        <div class="col-2 text-right">
+            <h1 class="display-4"><span class="badge badge-secondary">{{reminder.date}}</span></h1>
+            <h2>{{reminder.month}}</h2>
+        </div>
+        <div class="col-10">
+            <h3 class="text-uppercase"><strong>Reminder</strong></h3>
+            <h6>{{reminder.time}}</h6>
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="false"></i> {{reminder.day}}</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="false"></i> {{reminder.time}}</li>
+            </ul>
+            <p>Your medication is out on this day.</p>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}  
