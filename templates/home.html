@@ -3,8 +3,15 @@
 <div>
 
 <h1>Show us your dates!</h1>
-<input type="file"></input> 
-<button>Analyse</button>
+<form method="POST" enctype="multipart/form-data">
+<input type="file" name="filename" id="filename"></input> 
+<button type="submit">Analyse</button>
+<form>
+
+<form method="POST">
+<h2 style="padding:20px;">{{text}}</h2>
+<button type="submit">Remind me!</button> 
+</form>
 
 </div>
 
