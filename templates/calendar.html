@@ -14,12 +14,13 @@
             <h2>{{reminder.month}}</h2>
         </div>
         <div class="col-10">
-            <h3 class="text-uppercase"><strong>{{reminder.name}}</strong></h3>
+            <h3 class="text-uppercase"><strong>Reminder</strong></h3>
+            <h6>{{reminder.time}}</h6>
             <ul class="list-inline">
-                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{reminder.day}}</li>
-                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{reminder.time}}</li>
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="false"></i> {{reminder.day}}</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="false"></i> {{reminder.time}}</li>
             </ul>
-            <p>{{reminder.description}}</p>
+            <p>Your medication is out on this day.</p>
         </div>
     </div>
 

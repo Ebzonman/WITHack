@@ -10,36 +10,63 @@ def home():
     if request.method == "POST":
         file = request.files['filename']
         file_name = file.filename or ''
-        destination = '/'.join(["Images/", file_name])
-        file.save(destination)
-        text = tessocr(destination)
-        makeReminder(text)
-
+        return redirect(url_for("upload", filename=file_name))
     return render_template("home.html", text=text)
 
 @app.route("/calendar", methods=["GET", "POST"])
 def calendar():
     return render_template("calendar.html", reminders=reminders)
 
+@app.route("/upload/<filename>", methods=["GET", "POST"])
+def upload(filename):
+    destination = '/'.join(["Images", filename])
+    print(destination)
+    text = tessocr(destination)
+    if request.method == "POST":
+        makeReminder(text)
+        return redirect(url_for("calendar"))
+    return render_template("upload.html", text=text)
+
+def monthToNum(shortMonth):
+    return{
+        "1":'Jan',
+        "2":'Feb',
+        "3":'Mar',
+        "4":'Apr',
+        "5":'May',
+        "6":'Jun',
+        "7":'Jul',
+        "8":'Aug',
+        "9":'Sep', 
+        "10":'Oct',
+        "11":'Nov',
+        "12":'Dec'
+}[shortMonth]
+
 def makeReminder(string):
 
     rem = Reminder()
     tokens = string.split(" ")
-    timePattern = "^\d{2}\:\d{2}\$"
-    datePattern = "^\d{1,2}\/\d{1,2}\/\d{4}$"
-    for token in tokens:
-        print(token)
-        # Find dates
-        if token == "JAN" or token == "FEB" or token == "MAR" or token == "APR" or token == "MAY" or token == "JUN" or token == "JUL" or token == "AUG" or token == "SEP" or token == "OCT" or token == "NOV" or token == "DEC":
-            rem.date = token
-            continue
-        if re.match(timePattern, token):
-            rem.time = token
-            continue
-        if "UseBy" in string or "Use By" in string:
-            print(token)
-            temp = token.split('/')
-            rem.day = temp[0]
-            rem.month = temp[1]
-            rem.year = temp[2]
-        reminders.append(rem)
+    if len(tokens) == 1:
+        date = tokens[0].split(":")
+        date = date[1].split("/")
+        rem.date = date[0]
+        rem.month = date[1]
+        rem.year = date[2]
+    elif len(tokens) == 2:
+        rem.name = tokens[1].title()
+        date = tokens[1].split(":")
+        date = date[1].split("/")
+        rem.date = date[0]
+        rem.month = date[1]
+        rem.year = date[2]
+    elif len(tokens) == 3:
+        rem.name = tokens[1].title()
+        date = tokens[1].split(":")
+        date = date[1].split("/")
+        rem.date = date[0]
+        rem.month = date[1]
+        rem.year = date[2]
+        rem.time = tokens[2]
+    rem.month = monthToNum(rem.month)
+    reminders.append(rem)
